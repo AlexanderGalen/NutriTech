@@ -1,3 +1,9 @@
-* {
-    background-color: antiquewhite;
+.title{
+    padding-left: 2rem;
+    background-color: blanchedalmond;
+;
+}
+
+.btn{
+    margin-bottom: 1rem;
 }
