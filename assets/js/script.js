@@ -102,8 +102,6 @@ if ( storedMeals == null){
 }
 
 
-
-
 searchBtn.addEventListener("click", function (event) {
 
     var search = userInput.value.trim();
