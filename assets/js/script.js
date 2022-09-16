@@ -1,5 +1,7 @@
 // get user input
 
+
+
 var userInput = document.getElementById("mealInput");
 // console.log(userInput);
 
@@ -14,6 +16,15 @@ var chartBaseUrl = "https://quickchart.io/chart?width=200&height=200&chart={type
 var searchBtn = document.getElementById("searchBtn");
 var clearBtn = document.getElementById("clearBtn");
 var savedMealsEl = document.getElementById("savedMeals");
+// select container of results
+var mealsContainerEl = document.getElementById("mealsContainer");
+
+// clears the previous results on page
+function clearResults(){
+    // remove contents of mealscontainer with html
+    mealsContainerEl.innerHTML="";
+}
+
 
 var storedMeals = localStorage.getItem("savedMeals")
 if ( storedMeals == null){
@@ -103,7 +114,7 @@ if ( storedMeals == null){
 
 
 searchBtn.addEventListener("click", function (event) {
-
+    clearResults();
     var search = userInput.value.trim();
     // console.log(search);
 
@@ -127,10 +138,40 @@ searchBtn.addEventListener("click", function (event) {
             // for (let i = 0; i < 4; i++) {
             //     console.log(data.results[0].nutrition.nutrients[i].amount, data.results[0].nutrition.nutrients[i].name);
             // }
+            var mealContainerEl = document.createElement("section");
+            mealContainerEl.setAttribute('id','meal1');
+            mealsContainerEl.appendChild(mealContainerEl)
+
+            var mealRowEl = document.createElement("section");
+            mealRowEl.setAttribute('class','col');
+            mealsContainerEl.appendChild(mealRowEl);
+
+            var mealDescrEl = document.createElement("section");
+            mealDescrEl.classList.add('col',"s6");
+            mealDescrEl.setAttribute('id','mealDescription');
+            mealsContainerEl.appendChild(mealDescrEl);
+            
+
+            var imageColEl = document.createElement("section");
+            imageColEl.classList.add('col',"s6");
+           imageColEl.setAttribute('id','imageColEl');
+            mealsContainerEl.appendChild(imageColEl);
+
+            var mealImageSecEl = document.createElement("section");
+            mealImageSecEl.setAttribute('id','mealImage');
+            mealsContainerEl.appendChild(mealImageSecEl);
+
+            var mealChartSecEl = document.createElement("section");
+            mealChartSecEl.setAttribute('id','mealChart');
+            mealsContainerEl.appendChild(mealChartSecEl);
+
+            
+           
+
 
             // Appends html with name of dish
-            var searchName = document.createElement("h4");
             var searchNameContainer = document.getElementById("mealDescription");
+            var searchName = document.createElement("h4");
             searchName.textContent = foodName;
             searchNameContainer.appendChild(searchName);
 
@@ -164,7 +205,7 @@ searchBtn.addEventListener("click", function (event) {
             // Appending chart image
             var chartUrl = `${chartBaseUrl}data:[${calories},${fat},${satFat},${carbs}]}]}}`;
             var chartImage = document.createElement("img");
-            var chartImageContainer = document.getElementById("chart");
+            var chartImageContainer = document.getElementById("mealChart");
             chartImage.src = chartUrl;
             chartImageContainer.appendChild(chartImage);
 
@@ -176,6 +217,9 @@ searchBtn.addEventListener("click", function (event) {
 
 
             saveBtn.addEventListener("click", function (event) {
+                //clear 
+                
+               
                 var mealName = foodName;
 
 
@@ -196,13 +240,14 @@ searchBtn.addEventListener("click", function (event) {
 
 
                 savedMealsBtn.addEventListener("click", function (event) {
-
+                    clearResults();
                     var spoonApiUrl = `${spoonApiBaseUrl}${mealName}&number=5&addRecipeNutrition=true&apiKey=${spoonApiKey}`;
                     console.log(spoonApiUrl);
 
                     fetch(spoonApiUrl).then(function (response) {
                         return response.json();
                     }).then(function (data) {
+                        
                         if (data.results.length === 0) {
                             console.log("No results.");
                         } else {
@@ -217,6 +262,36 @@ searchBtn.addEventListener("click", function (event) {
                             // for (let i = 0; i < 4; i++) {
                             //     console.log(data.results[0].nutrition.nutrients[i].amount, data.results[0].nutrition.nutrients[i].name);
                             // }
+
+                            // creatiing base html 12.pm 
+                            var mealContainerEl = document.createElement("section");
+                            mealContainerEl.setAttribute('id','meal1');
+                            mealsContainerEl.appendChild(mealContainerEl)
+                
+                            var mealRowEl = document.createElement("section");
+                            mealRowEl.setAttribute('class','col');
+                            mealsContainerEl.appendChild(mealRowEl);
+                
+                            var mealDescrEl = document.createElement("section");
+                            mealDescrEl.classList.add('col',"s6");
+                            mealDescrEl.setAttribute('id','mealDescription');
+                            mealsContainerEl.appendChild(mealDescrEl);
+                            
+                
+                            var imageColEl = document.createElement("section");
+                            imageColEl.classList.add('col',"s6");
+                           imageColEl.setAttribute('id','imageColEl');
+                            mealsContainerEl.appendChild(imageColEl);
+                
+                            var mealImageSecEl = document.createElement("section");
+                            mealImageSecEl.setAttribute('id','mealImage');
+                            mealsContainerEl.appendChild(mealImageSecEl);
+                
+                            var mealChartSecEl = document.createElement("section");
+                            mealChartSecEl.setAttribute('id','mealChart');
+                            mealsContainerEl.appendChild(mealChartSecEl);
+
+
 
                             // Appends html with name of dish
                             var searchName = document.createElement("h4");
@@ -245,7 +320,7 @@ searchBtn.addEventListener("click", function (event) {
 
                             var chartUrl = `${chartBaseUrl}data:[${calories},${fat},${satFat},${carbs}]}]}}`;
                             var chartImage = document.createElement("img");
-                            var chartImageContainer = document.getElementById("chart");
+                            var chartImageContainer = document.getElementById("mealChart");
                             chartImage.src = chartUrl;
                             chartImageContainer.appendChild(chartImage);
 
@@ -267,7 +342,7 @@ searchBtn.addEventListener("click", function (event) {
 clearBtn.addEventListener("click", function (event) {
     localStorage.clear();
     savedMealsEl.innerHTML = "";
-
+   
 });
 
 
