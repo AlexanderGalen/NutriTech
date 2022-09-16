@@ -1,5 +1,7 @@
 // get user input
 
+
+
 var userInput = document.getElementById("mealInput");
 // console.log(userInput);
 
@@ -14,6 +16,15 @@ var chartBaseUrl = "https://quickchart.io/chart?width=200&height=200&chart={type
 var searchBtn = document.getElementById("searchBtn");
 var clearBtn = document.getElementById("clearBtn");
 var savedMealsEl = document.getElementById("savedMeals");
+// select container of results
+var mealsContainerEl = document.getElementById("mealsContainer");
+
+// clears the previous results on page
+function clearResults(){
+    // remove contents of mealscontainer with html
+    mealsContainerEl.innerHTML="";
+}
+
 
 var storedMeals = localStorage.getItem("savedMeals")
 if ( storedMeals == null){
@@ -24,6 +35,7 @@ if ( storedMeals == null){
 
     for (let i = 0; i < storedMealArray.length; i++) {
         const mealName = storedMealArray[i];
+   
         
         var savedMealsBtn = document.createElement("button");
         savedMealsBtn.classList.add("btn", "waves-effect", "waves-light");
@@ -42,7 +54,8 @@ if ( storedMeals == null){
             }).then(function (data) {
                 if (data.results.length === 0) {
                     console.log("No results.");
-                } else {
+                } 
+                else {
                     var foodName = data.results[0].title;
                     var foodImage = data.results[0].image;
                     var foodSummary = data.results[0].summary;
@@ -52,24 +65,27 @@ if ( storedMeals == null){
     
                     // displays nutrients
                     // for (let i = 0; i < 4; i++) {
-                    //     console.log(data.results[0].nutrition.nutrients[i].amount, data.results[0].nutrition.nutrients[i].name);
+                    //     console.log(data.results[0].nutrition.nutrients[0].amount, data.results[0].nutrition.nutrients[0].name);
                     // }
     
                     // Appends html with name of dish
                     var searchName = document.createElement("h4");
-                    var searchNameContainer = document.getElementById("mealDescription");
+                    var searchNameContainer = document.createElement("section");
+                    searchNameContainer.setAttribute("id","mealDescription");
                     searchName.textContent = foodName;
                     searchNameContainer.appendChild(searchName);
     
                     // Appends html with image of dish
                     var searchImage = document.createElement("img");
-                    var searchImageContainer = document.getElementById("mealImage");
+                    var searchImageContainer = document.createElement("section");
+                    searchImageContainer.setAttribute("id","mealImage");
                     searchImage.src = foodImage;
                     searchImageContainer.appendChild(searchImage);
     
                     // Appends html with description of dish
                     var searchSummary = document.createElement("p");
-                    var searchSummaryContainer = document.getElementById("mealDescription");
+                    var searchSummaryContainer = document.createElement("section");
+                    searchSummaryContainer.setAttribute("id","mealDescription");
                     searchSummary.innerHTML = foodSummary;
                     searchSummaryContainer.appendChild(searchSummary);
     
@@ -82,7 +98,8 @@ if ( storedMeals == null){
     
                     var chartUrl = `${chartBaseUrl}data:[${calories},${fat},${satFat},${carbs}]}]}}`;
                     var chartImage = document.createElement("img");
-                    var chartImageContainer = document.getElementById("chart");
+                    var chartImageContainer = document.createElement("section");
+                    chartImageContainer.setAttribute("id","chart");
                     chartImage.src = chartUrl;
                     chartImageContainer.appendChild(chartImage);
     
@@ -103,7 +120,7 @@ if ( storedMeals == null){
 
 
 searchBtn.addEventListener("click", function (event) {
-
+    clearResults();
     var search = userInput.value.trim();
     // console.log(search);
 
@@ -115,151 +132,220 @@ searchBtn.addEventListener("click", function (event) {
     }).then(function (data) {
         if (data.results.length === 0) {
             console.log("No results.");
-        } else {
-            var foodName = data.results[0].title;
-            var foodImage = data.results[0].image;
-            var foodSummary = data.results[0].summary;
-            // var foodNutrients = data.results[0].nutrition.nutrients[0].amount;
-            console.log(foodName);
-            console.log(foodImage);
+        } 
+        else {
+            var results = data.results;
+            // for (let i = 0; i < results.length; i++) {
+                var foodName = results[0].title;
+                var foodImage = results[0].image;
+                var foodSummary = results[0].summary;
+                // var foodNutrients = data.results[0].nutrition.nutrients[0].amount;
+                console.log(foodName);
+                console.log(foodImage);
 
-            // displays nutrients
-            // for (let i = 0; i < 4; i++) {
-            //     console.log(data.results[0].nutrition.nutrients[i].amount, data.results[0].nutrition.nutrients[i].name);
+                // displays nutrients
+                // for (let i = 0; i < 4; i++) {
+                //     console.log(data.results[0].nutrition.nutrients[0].amount, data.results[0].nutrition.nutrients[0].name);
+                // }
+                var mealContainerEl = document.createElement("section");
+                mealContainerEl.setAttribute('id',`meal`);
+                mealsContainerEl.appendChild(mealContainerEl)
+
+
+                var mealRowEl = document.createElement("section");
+                mealRowEl.setAttribute('class','col');
+                mealContainerEl.appendChild(mealRowEl);
+
+                var mealDescrEl = document.createElement("section");
+                mealDescrEl.classList.add('col',"s6");
+                mealDescrEl.setAttribute('id','mealDescription');
+                mealRowEl.appendChild(mealDescrEl);
+                
+
+                var imageColEl = document.createElement("section");
+                imageColEl.classList.add('col',"s6");
+                imageColEl.setAttribute('id','imageColEl');
+               mealRowEl.appendChild(imageColEl);
+
+                var mealImageSecEl = document.createElement("section");
+                mealImageSecEl.setAttribute('id','mealImage');
+               imageColEl.appendChild(mealImageSecEl);
+
+                var mealChartSecEl = document.createElement("section");
+                mealChartSecEl.setAttribute('id','mealChart');
+                imageColEl.appendChild(mealChartSecEl);
+
+                
+            
+
+
+                // Appends html with name of dish
+                var searchNameContainer = document.getElementById("mealDescription");
+                var searchName = document.createElement("h4");
+                searchName.textContent = foodName;
+                searchNameContainer.appendChild(searchName);
+
+                // Appends html with image of dish
+                var searchImage = document.createElement("img");
+                var searchImageContainer = document.getElementById("mealImage");
+                searchImage.src = foodImage;
+                searchImageContainer.appendChild(searchImage);
+
+                // Appends html with description of dish
+                var searchSummary = document.createElement("p");
+                var searchSummaryContainer = document.getElementById("mealDescription");
+                searchSummary.innerHTML = foodSummary;
+                searchSummaryContainer.appendChild(searchSummary);
+
+                // Setting up nutrient data for chart
+                var nutrients = results[0].nutrition.nutrients;
+                var calories = nutrients[0].amount;
+                var fat = nutrients[1].amount;
+                var satFat = nutrients[2].amount;
+                var carbs = nutrients[3].amount;
+
+                // console.log(calories, fat, satFat, carbs);
+
+                // https://quickchart.io/chart?c={type:'bar',data:{labels:
+                // ['Q1','Q2','Q3','Q4'], datasets:[{label:'Users',data:[50,60,70,180]},
+                // {label:'Revenue',data:[100,200,300,400]}]}}
+                // {type:'bar',data:{labels:['Calories','Fat','Saturated Fat','Carbohydrates'], datasets:[{label:'Nutrients'data:[440.735.160.8657.98]}]}}
+
+
+                // Appending chart image
+                var chartUrl = `${chartBaseUrl}data:[${calories},${fat},${satFat},${carbs}]}]}}`;
+                var chartImage = document.createElement("img");
+                var chartImageContainer = document.getElementById("mealChart");
+                chartImage.src = chartUrl;
+                chartImageContainer.appendChild(chartImage);
+
+                // Append meal description with save button //
+                var saveBtn = document.createElement("button");
+                saveBtn.classList.add("btn", "waves-effect", "waves-light");
+
+                saveBtn.textContent = "Save Dish";
+                searchSummaryContainer.appendChild(saveBtn);
+
+
+                saveBtn.addEventListener("click", function (event) {
+                   
+                    
+                
+                    var mealName = foodName;
+
+
+                    var savedMeals = JSON.parse(localStorage.getItem("savedMeals")) || [];
+                    savedMeals.push(mealName)
+                    localStorage.setItem("savedMeals", JSON.stringify(savedMeals));
+                    console.log(savedMeals)
+
+
+                    var savedMealsBtn = document.createElement("button");
+                    savedMealsBtn.classList.add("btn", "waves-effect", "waves-light");
+                    savedMealsBtn.textContent = mealName;
+                    savedMealsEl.appendChild(savedMealsBtn);
+
+                    /// re Fetch for saved meals 
+
+
+
+
+                    savedMealsBtn.addEventListener("click", function (event) {
+                        clearResults();
+                        var spoonApiUrl = `${spoonApiBaseUrl}${mealName}&number=5&addRecipeNutrition=true&apiKey=${spoonApiKey}`;
+                        console.log(spoonApiUrl);
+
+                        fetch(spoonApiUrl).then(function (response) {
+                            return response.json();
+                        }).then(function (data) {
+                            
+                            if (data.results.length === 0) {
+                                console.log("No results.");
+                            } else {
+                                var foodName = results[0].title;
+                                var foodImage = results[0].image;
+                                var foodSummary = results[0].summary;
+                                // var foodNutrients = data.results[0].nutrition.nutrients[0].amount;
+                                console.log(foodName);
+                                console.log(foodImage);
+
+                                // displays nutrients
+                                // for (let i = 0; i < 4; i++) {
+                                //     console.log(data.results[0].nutrition.nutrients[0].amount, data.results[0].nutrition.nutrients[0].name);
+                                // }
+
+                                // creatiing base html 12.pm 
+                                var mealContainerEl = document.createElement("section");
+                                mealContainerEl.setAttribute('id',`meal`);
+                                mealsContainerEl.appendChild(mealContainerEl)
+                    
+                                var mealRowEl = document.createElement("section");
+                                mealRowEl.setAttribute('class','col');
+                                mealContainerEl.appendChild(mealRowEl);
+                    
+                                var mealDescrEl = document.createElement("section");
+                                mealDescrEl.classList.add('col',"s6");
+                                mealDescrEl.setAttribute('id','mealDescription');
+                                mealContainerEl.appendChild(mealDescrEl);
+                                
+                    
+                                var imageColEl = document.createElement("section");
+                                imageColEl.classList.add('col',"s6");
+                                imageColEl.setAttribute('id','imageColEl');
+                                mealContainerEl.appendChild(imageColEl);
+                    
+                                var mealImageSecEl = document.createElement("section");
+                                mealImageSecEl.setAttribute('id','mealImage');
+                                mealContainerEl.appendChild(mealImageSecEl);
+                    
+                                var mealChartSecEl = document.createElement("section");
+                                mealChartSecEl.setAttribute('id','mealChart');
+                                mealContainerEl.appendChild(mealChartSecEl);
+
+
+
+                                // Appends html with name of dish
+                                var searchName = document.createElement("h4");
+                                var searchNameContainer = document.getElementById("mealDescription");
+                                searchName.textContent = foodName;
+                                searchNameContainer.appendChild(searchName);
+
+                                // Appends html with image of dish
+                                var searchImage = document.createElement("img");
+                                var searchImageContainer = document.getElementById("mealImage");
+                                searchImage.src = foodImage;
+                                searchImageContainer.appendChild(searchImage);
+
+                                // Appends html with description of dish
+                                var searchSummary = document.createElement("p");
+                                var searchSummaryContainer = document.getElementById("mealDescription");
+                                searchSummary.innerHTML = foodSummary;
+                                searchSummaryContainer.appendChild(searchSummary);
+
+                                // Setting up nutrient data for chart
+                                var nutrients = results[0].nutrition.nutrients;
+                                var calories = nutrients[0].amount;
+                                var fat = nutrients[1].amount;
+                                var satFat = nutrients[2].amount;
+                                var carbs = nutrients[3].amount;
+
+                                var chartUrl = `${chartBaseUrl}data:[${calories},${fat},${satFat},${carbs}]}]}}`;
+                                var chartImage = document.createElement("img");
+                                var chartImageContainer = document.getElementById("mealChart");
+                                chartImage.src = chartUrl;
+                                chartImageContainer.appendChild(chartImage);
+
+
+                            }
+                        })
+
+
+
+                    })//////
+                })
+
             // }
-
-            // Appends html with name of dish
-            var searchName = document.createElement("h4");
-            var searchNameContainer = document.getElementById("mealDescription");
-            searchName.textContent = foodName;
-            searchNameContainer.appendChild(searchName);
-
-            // Appends html with image of dish
-            var searchImage = document.createElement("img");
-            var searchImageContainer = document.getElementById("mealImage");
-            searchImage.src = foodImage;
-            searchImageContainer.appendChild(searchImage);
-
-            // Appends html with description of dish
-            var searchSummary = document.createElement("p");
-            var searchSummaryContainer = document.getElementById("mealDescription");
-            searchSummary.innerHTML = foodSummary;
-            searchSummaryContainer.appendChild(searchSummary);
-
-            // Setting up nutrient data for chart
-            var nutrients = data.results[0].nutrition.nutrients;
-            var calories = nutrients[0].amount;
-            var fat = nutrients[1].amount;
-            var satFat = nutrients[2].amount;
-            var carbs = nutrients[3].amount;
-
-            // console.log(calories, fat, satFat, carbs);
-
-            // https://quickchart.io/chart?c={type:'bar',data:{labels:
-            // ['Q1','Q2','Q3','Q4'], datasets:[{label:'Users',data:[50,60,70,180]},
-            // {label:'Revenue',data:[100,200,300,400]}]}}
-            // {type:'bar',data:{labels:['Calories','Fat','Saturated Fat','Carbohydrates'], datasets:[{label:'Nutrients'data:[440.735.160.8657.98]}]}}
-
-
-            // Appending chart image
-            var chartUrl = `${chartBaseUrl}data:[${calories},${fat},${satFat},${carbs}]}]}}`;
-            var chartImage = document.createElement("img");
-            var chartImageContainer = document.getElementById("chart");
-            chartImage.src = chartUrl;
-            chartImageContainer.appendChild(chartImage);
-
-            // Append meal description with save button //
-            var saveBtn = document.createElement("button");
-            saveBtn.classList.add("btn", "waves-effect", "waves-light");
-            saveBtn.textContent = "Save Dish";
-            searchSummaryContainer.appendChild(saveBtn);
-
-
-            saveBtn.addEventListener("click", function (event) {
-                var mealName = foodName;
-
-
-                var savedMeals = JSON.parse(localStorage.getItem("savedMeals")) || [];
-                savedMeals.push(mealName)
-                localStorage.setItem("savedMeals", JSON.stringify(savedMeals));
-                console.log(savedMeals)
-
-
-                var savedMealsBtn = document.createElement("button");
-                savedMealsBtn.classList.add("btn", "waves-effect", "waves-light");
-                savedMealsBtn.textContent = mealName;
-                savedMealsEl.appendChild(savedMealsBtn);
-
-                /// re Fetch for saved meals 
-
-
-
-
-                savedMealsBtn.addEventListener("click", function (event) {
-
-                    var spoonApiUrl = `${spoonApiBaseUrl}${mealName}&number=5&addRecipeNutrition=true&apiKey=${spoonApiKey}`;
-                    console.log(spoonApiUrl);
-
-                    fetch(spoonApiUrl).then(function (response) {
-                        return response.json();
-                    }).then(function (data) {
-                        if (data.results.length === 0) {
-                            console.log("No results.");
-                        } else {
-                            var foodName = data.results[0].title;
-                            var foodImage = data.results[0].image;
-                            var foodSummary = data.results[0].summary;
-                            // var foodNutrients = data.results[0].nutrition.nutrients[0].amount;
-                            console.log(foodName);
-                            console.log(foodImage);
-
-                            // displays nutrients
-                            // for (let i = 0; i < 4; i++) {
-                            //     console.log(data.results[0].nutrition.nutrients[i].amount, data.results[0].nutrition.nutrients[i].name);
-                            // }
-
-                            // Appends html with name of dish
-                            var searchName = document.createElement("h4");
-                            var searchNameContainer = document.getElementById("mealDescription");
-                            searchName.textContent = foodName;
-                            searchNameContainer.appendChild(searchName);
-
-                            // Appends html with image of dish
-                            var searchImage = document.createElement("img");
-                            var searchImageContainer = document.getElementById("mealImage");
-                            searchImage.src = foodImage;
-                            searchImageContainer.appendChild(searchImage);
-
-                            // Appends html with description of dish
-                            var searchSummary = document.createElement("p");
-                            var searchSummaryContainer = document.getElementById("mealDescription");
-                            searchSummary.innerHTML = foodSummary;
-                            searchSummaryContainer.appendChild(searchSummary);
-
-                            // Setting up nutrient data for chart
-                            var nutrients = data.results[0].nutrition.nutrients;
-                            var calories = nutrients[0].amount;
-                            var fat = nutrients[1].amount;
-                            var satFat = nutrients[2].amount;
-                            var carbs = nutrients[3].amount;
-
-                            var chartUrl = `${chartBaseUrl}data:[${calories},${fat},${satFat},${carbs}]}]}}`;
-                            var chartImage = document.createElement("img");
-                            var chartImageContainer = document.getElementById("chart");
-                            chartImage.src = chartUrl;
-                            chartImageContainer.appendChild(chartImage);
-
-
-                        }
-                    })
-
-
-
-                })//////
-            })
-
         }
-
     })
 
 })
@@ -267,7 +353,7 @@ searchBtn.addEventListener("click", function (event) {
 clearBtn.addEventListener("click", function (event) {
     localStorage.clear();
     savedMealsEl.innerHTML = "";
-
+   
 });
 
 
