@@ -6,9 +6,11 @@ var userInput = document.getElementById("mealInput");
 // console.log(userInput);
 
 var spoonApiBaseUrl = "https://api.spoonacular.com/recipes/complexSearch?query=";
-var spoonApiKey = "ae4e48791531413a9caf17d0545a2cf9";
+// var spoonApiKey = "ae4e48791531413a9caf17d0545a2cf9"; 
+var spoonApiKey = "72890d7f0e9442b19d950f2d8fcb11dd";
 
-var chartBaseUrl = "https://quickchart.io/chart?width=200&height=200&chart={type:'bar',data:{labels:['Calories','Fat','Saturated Fat','Carbohydrates'], datasets:[{label:'Nutrients',";
+
+var chartBaseUrl = "https://quickchart.io/chart?width=200&height=200&chart={type:'bar',data:{labels:['Fat','Saturated Fat','Carbohydrates'], datasets:[{label:'Grams',";
 // https://quickchart.io/chart?c={type:'bar',data:{labels:
 // ['Q1','Q2','Q3','Q4'], datasets:[{label:'Users',data:[50,60,70,180]},
 // {label:'Revenue',data:[100,200,300,400]}]}}
@@ -96,11 +98,14 @@ if ( storedMeals == null){
                     var satFat = nutrients[2].amount;
                     var carbs = nutrients[3].amount;
     
-                    var chartUrl = `${chartBaseUrl}data:[${calories},${fat},${satFat},${carbs}]}]}}`;
+                    var chartUrl = `${chartBaseUrl}data:[${fat},${satFat},${carbs}]}]}}`;
                     var chartImage = document.createElement("img");
                     var chartImageContainer = document.createElement("section");
                     chartImageContainer.setAttribute("id","chart");
                     chartImage.src = chartUrl;
+                    var calorieCount = document.createElement("h5");
+                    calorieCount.textContent = `Calories: ${calories}`;
+                    chartImageContainer.appendChild(calorieCount);
                     chartImageContainer.appendChild(chartImage);
     
     
@@ -213,10 +218,13 @@ searchBtn.addEventListener("click", function (event) {
 
 
                 // Appending chart image
-                var chartUrl = `${chartBaseUrl}data:[${calories},${fat},${satFat},${carbs}]}]}}`;
+                var chartUrl = `${chartBaseUrl}data:[${fat},${satFat},${carbs}]}]}}`;
                 var chartImage = document.createElement("img");
                 var chartImageContainer = document.getElementById("mealChart");
                 chartImage.src = chartUrl;
+                var calorieCount = document.createElement("h5");
+                calorieCount.textContent = `Calories: ${calories}`;
+                chartImageContainer.appendChild(calorieCount);
                 chartImageContainer.appendChild(chartImage);
 
                 // Append meal description with save button //
@@ -286,21 +294,21 @@ searchBtn.addEventListener("click", function (event) {
                                 var mealDescrEl = document.createElement("section");
                                 mealDescrEl.classList.add('col',"s6");
                                 mealDescrEl.setAttribute('id','mealDescription');
-                                mealContainerEl.appendChild(mealDescrEl);
+                                mealRowEl.appendChild(mealDescrEl);
                                 
                     
                                 var imageColEl = document.createElement("section");
                                 imageColEl.classList.add('col',"s6");
                                 imageColEl.setAttribute('id','imageColEl');
-                                mealContainerEl.appendChild(imageColEl);
+                                mealRowEl.appendChild(imageColEl);
                     
                                 var mealImageSecEl = document.createElement("section");
                                 mealImageSecEl.setAttribute('id','mealImage');
-                                mealContainerEl.appendChild(mealImageSecEl);
+                                mealRowEl.appendChild(mealImageSecEl);
                     
                                 var mealChartSecEl = document.createElement("section");
                                 mealChartSecEl.setAttribute('id','mealChart');
-                                mealContainerEl.appendChild(mealChartSecEl);
+                                mealRowEl.appendChild(mealChartSecEl);
 
 
 
@@ -329,10 +337,13 @@ searchBtn.addEventListener("click", function (event) {
                                 var satFat = nutrients[2].amount;
                                 var carbs = nutrients[3].amount;
 
-                                var chartUrl = `${chartBaseUrl}data:[${calories},${fat},${satFat},${carbs}]}]}}`;
+                                var chartUrl = `${chartBaseUrl}data:[${fat},${satFat},${carbs}]}]}}`;
                                 var chartImage = document.createElement("img");
                                 var chartImageContainer = document.getElementById("mealChart");
                                 chartImage.src = chartUrl;
+                                var calorieCount = document.createElement("h5");
+                                calorieCount.textContent = `Calories: ${calories}`;
+                                chartImageContainer.appendChild(calorieCount);
                                 chartImageContainer.appendChild(chartImage);
 
 
