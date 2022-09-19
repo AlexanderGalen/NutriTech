@@ -1,9 +1,10 @@
-.title{
-    padding-left: 2rem;
+.title {
+    padding: 2rem;
     background-color: blanchedalmond;
+    font-weight: bold;
 ;
 }
 
-.btn{
+.btn {
     margin-bottom: 1rem;
 }
